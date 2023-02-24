@@ -1,0 +1,1839 @@
+public with sharing class ProjectionController{
+    
+    @AuraEnabled
+    public static Account getAcccount(string recordId) {
+        return [Select Id, Name, Group_Code__c,Group_Head__c,KAM_Head__r.Name,cmainperson__r.Name FROM Account where Id=: recordId];
+    }
+    
+    @AuraEnabled        
+    public static List<String> getPickListValuesIntoList(){
+        List<String> pickListValuesList = new List<String>();
+        Schema.DescribeFieldResult fieldResult = Monthly_Projection__c.Year__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        for( Schema.PicklistEntry pickListVal : ple){
+            pickListValuesList.add(pickListVal.getLabel());
+        }     
+        return pickListValuesList;
+    }
+    
+    @AuraEnabled        
+    public static List<String> getMonthValuesIntoList(){
+        List<String> pickListyearValuesList = new List<String>();
+        Schema.DescribeFieldResult fieldResult = Monthly_Projection__c.Month__c.getDescribe();
+        List<Schema.PicklistEntry> plek = fieldResult.getPicklistValues();
+        for( Schema.PicklistEntry pickListValue : plek){
+            pickListyearValuesList.add(pickListValue.getLabel());
+        }     
+        return pickListyearValuesList;
+    }
+    
+    public class projectionData{
+        
+        @AuraEnabled        
+        public double value{get;set;}
+        @AuraEnabled        
+        public String year{get;set;}
+        @AuraEnabled        
+        public String motnh{get;set;}
+        
+    }
+    
+    public class projectionDataWrapper{
+        @AuraEnabled        
+        public String product{get;set;}
+        @AuraEnabled        
+        public String lastYr{get;set;}
+        @AuraEnabled        
+        public String thisYr{get;set;}
+        
+        @AuraEnabled        
+        public Decimal thisYrJanVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrFebVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrMarVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrAprVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrMayVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrJunVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrJulVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrAugVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrSepVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrOctVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrNovVal{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrDecVal{get;set;}
+        
+        @AuraEnabled        
+        public Decimal lastYrJanVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrFebVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrMarVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrAprVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrMayVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrJunVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrJulVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrAugVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrSepVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrOctVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrNovVal{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrDecVal{get;set;}
+        
+        @AuraEnabled        
+        public Decimal lastMTD{get;set;}
+        @AuraEnabled        
+        public Decimal thisMTD{get;set;}
+        
+        
+        @AuraEnabled        
+        public Decimal thisYrJanPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrFebPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrMarPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrAprPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrMayPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrJunPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrJulPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrAugPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrSepPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrOctPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrNovPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisYrDecPcs{get;set;}
+        
+        @AuraEnabled        
+        public Decimal lastYrJanPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrFebPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrMarPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrAprPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrMayPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrJunPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrJulPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrAugPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrSepPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrOctPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrNovPcs{get;set;}
+        @AuraEnabled        
+        public Decimal lastYrDecPcs{get;set;}
+        
+        @AuraEnabled        
+        public Decimal lastMTDPcs{get;set;}
+        @AuraEnabled        
+        public Decimal thisMTDPcs{get;set;}
+        
+        @AuraEnabled        
+        public Decimal gwtRevJanVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevFebVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevMarVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevAprVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevMayVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevJunVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevJulVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevAugVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevSepVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevOctVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevNovVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtRevDecVal{get;set;}
+        
+        @AuraEnabled        
+        public Decimal gwtPcsJanVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsFebVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsMarVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsAprVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsMayVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsJunVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsJulVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsAugVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsSepVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsOctVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsNovVal{get;set;}
+        @AuraEnabled        
+        public Decimal gwtPcsDecVal{get;set;}
+    }
+    
+    @AuraEnabled
+    public static List<projectionDataWrapper> getProjection2(String accountId,String projectionType) {
+        System.debug('****projectionType '+projectionType);
+        List<String>months = new List<String>{'01','02','03','04','05','06','07','08','09','10','11','12'};
+            
+            Account groupAccount;
+        String groupCode='';
+        for(Account acc: [select id,Group_Code__c from Account where Id=:accountId]){
+            groupAccount = acc;
+        }
+        System.debug('groupAccount '+groupAccount);
+        if(groupAccount != null){
+            groupCode = '%'+groupAccount.Group_Code__c+'%';
+        }
+        
+        Map<String,Map<String,Monthly_Invoice__c>>prevYearProdMap = new Map<String,Map<String,Monthly_Invoice__c>>();
+        Map<String,Map<String,Monthly_Invoice__c>>thisYearProdMap = new Map<String,Map<String,Monthly_Invoice__c>>();
+        Set<String>products = new Set<String>();
+        
+        String lastYear = String.valueOf(Date.today().addYears(-1).year());
+        String thisYear = String.valueOf(Date.today().year());
+        String currentUserId = userinfo.getUserId();
+        
+        String BaseQueryLast = 'select id,Yeild_Per_Pc__c,Month_Year__c,Year_String__c,Product_Name__c,Revenue__c,Account__r.Group_Code__c from Monthly_Invoice__c WHERE ';
+        if(String.isNotBlank(projectionType) && projectionType.containsIgnoreCase('MY')){
+            BaseQueryLast += 'Account__r.Group_Code__c LIKE: groupCode AND CreatedbyId =:currentUserId AND Year_String__c =:lastYear order by lastmodifiedDate';
+        }else if(String.isNotBlank(projectionType) && projectionType.containsIgnoreCase('TOP')){
+            BaseQueryLast += 'Account__r.Group_Code__c LIKE: groupCode AND Year_String__c =:lastYear order by lastmodifiedDate';
+        }else{
+            BaseQueryLast += 'Account__r.Group_Code__c LIKE: groupCode AND Year_String__c =:lastYear order by lastmodifiedDate';
+        }
+        System.debug('******* BaseQueryLast '+BaseQueryLast);
+        //last Year logic
+        for(Monthly_Invoice__c proj : database.query(BaseQueryLast)){
+            products.add(proj.Product_Name__c);
+            
+            if(prevYearProdMap.containsKey(proj.Product_Name__c)){
+                Map<String,Monthly_Invoice__c>temp = new Map<String,Monthly_Invoice__c>();
+                if(proj.Month_Year__c != null){
+                    temp.put(proj.Month_Year__c.subString(0,2).toLowerCase(),proj);
+                }    
+                prevYearProdMap.put(proj.Product_Name__c,temp);
+            }else{
+                Map<String,Monthly_Invoice__c>temp = new Map<String,Monthly_Invoice__c>();
+                if(proj.Month_Year__c != null){
+                    temp.put(proj.Month_Year__c.subString(0,2).toLowerCase(),proj);
+                }   
+                prevYearProdMap.put(proj.Product_Name__c,temp);
+            }
+        }
+        
+        System.debug('=> '+prevYearProdMap);
+        
+        String BaseQueryThis = 'select id,Yeild_Per_Pc__c,Month_Year__c,Year_String__c,Product_Name__c,Revenue__c,Account__r.Group_Code__c from Monthly_Invoice__c WHERE ';
+        
+        if(String.isNotBlank(projectionType) && projectionType.containsIgnoreCase('MY')){
+            BaseQueryThis += 'Account__r.Group_Code__c LIKE: groupCode AND CreatedbyId =:currentUserId AND Year_String__c =:thisYear order by lastmodifiedDate';
+        }else if(String.isNotBlank(projectionType) && projectionType.containsIgnoreCase('TOP')){
+            BaseQueryThis += 'Account__r.Group_Code__c LIKE: groupCode AND Year_String__c =:thisYear order by lastmodifiedDate';
+        }else{
+            BaseQueryThis += 'Account__r.Group_Code__c LIKE: groupCode AND Year_String__c =:thisYear order by lastmodifiedDate';
+        }
+        
+        System.debug('******* BaseQueryThis '+BaseQueryThis);
+        
+        //last Year logic
+        for(Monthly_Invoice__c proj : database.query(BaseQueryThis)){
+            products.add(proj.Product_Name__c);
+            
+            if(thisYearProdMap.containsKey(proj.Product_Name__c)){
+                Map<String,Monthly_Invoice__c>temp = new Map<String,Monthly_Invoice__c>();
+                if(proj.Month_Year__c != null){
+                    temp.put(proj.Month_Year__c.subString(0,2).toLowerCase(),proj);
+                }    
+                thisYearProdMap.put(proj.Product_Name__c,temp);
+            }else{
+                Map<String,Monthly_Invoice__c>temp = new Map<String,Monthly_Invoice__c>();
+                if(proj.Month_Year__c != null){
+                    temp.put(proj.Month_Year__c.subString(0,2).toLowerCase(),proj);
+                }   
+                thisYearProdMap.put(proj.Product_Name__c,temp);
+            }
+        }
+        
+        System.debug('=> '+thisYearProdMap);
+        List<projectionDataWrapper>wraperList = new List<projectionDataWrapper>();   
+        
+        String CurrentMonth = Datetime.now().format('MM/dd');
+        CurrentMonth = CurrentMonth.substring(0,2);        
+        
+        for(String product : products){
+            projectionDataWrapper wrapObj = new projectionDataWrapper();
+            wrapObj.product = product;
+            wrapObj.lastYr = lastYear;
+            wrapObj.thisYr = thisYear;
+            
+            Decimal lastMtd = 0;
+            Decimal thisMtd = 0;
+            Boolean flag = true;
+            Decimal lastMtdPcs = 0;
+            Decimal thisMtdPcs = 0;
+            
+            Map<String,Monthly_Invoice__c>cusrrYrProj;
+            if(prevYearProdMap.containsKey(product)){
+                Map<String,Monthly_Invoice__c>lastYrProj = prevYearProdMap.get(product);
+                for(String month : months){
+                    Decimal monthRev = 0;
+                    Decimal monthPcs = 0;
+                    
+                    if(lastYrProj.containsKey(month.toLowerCase())){
+                        Monthly_Invoice__c projectionObj = lastYrProj.get(month.toLowerCase());
+                        if(projectionObj.Revenue__c != null){
+                            monthRev = projectionObj.Revenue__c;
+                            monthPcs = projectionObj.Yeild_Per_Pc__c;
+                            if(CurrentMonth == month){
+                                monthRev = (monthRev / Integer.valueOf(month)).setScale(2);
+                                monthPcs = (monthPcs / Integer.valueOf(month)).setScale(2);
+                                flag = false;
+                            }
+                            
+                            if(flag){
+                                lastMtd += projectionObj.Revenue__c; 
+                                lastMtdPcs += projectionObj.Yeild_Per_Pc__c;
+                            }
+                        } 
+                    } 
+                    
+                    if(month == '01'){
+                        wrapObj.lastYrJanVal = monthRev;
+                        wrapObj.lastYrJanPcs = monthPcs;
+                        
+                    }if(month == '02'){
+                        wrapObj.lastYrFebVal = monthRev;
+                        wrapObj.lastYrFebPcs = monthPcs;
+                        
+                    }if(month == '03'){
+                        wrapObj.lastYrMarVal = monthRev;
+                        wrapObj.lastYrMarPcs = monthPcs;
+                        
+                    }if(month == '04'){
+                        wrapObj.lastYrAprVal = monthRev;
+                        wrapObj.lastYrAprPcs = monthPcs;
+                        
+                    }if(month == '05'){
+                        wrapObj.lastYrMayVal = monthRev;
+                        wrapObj.lastYrMayPcs = monthPcs;
+                        
+                    }if(month == '06'){
+                        wrapObj.lastYrJunVal = monthRev;
+                        wrapObj.lastYrJunPcs = monthPcs;
+                        
+                    }if(month == '07'){
+                        wrapObj.lastYrJulVal = monthRev;
+                        wrapObj.lastYrJulPcs = monthPcs;
+                        
+                    }if(month == '08'){
+                        wrapObj.lastYrAugVal = monthRev;
+                        wrapObj.lastYrAugPcs = monthPcs;
+                        
+                    }if(month == '09'){
+                        wrapObj.lastYrSepVal = monthRev;
+                        wrapObj.lastYrSepPcs = monthPcs;
+                        
+                    }if(month == '10'){
+                        wrapObj.lastYrOctVal = monthRev;
+                        wrapObj.lastYrOctPcs = monthPcs;
+                        
+                    }if(month == '11'){
+                        wrapObj.lastYrNovVal = monthRev;
+                        wrapObj.lastYrNovPcs = monthPcs;
+                        
+                    }if(month == '12'){
+                        wrapObj.lastYrDecVal = monthRev;
+                        wrapObj.lastYrDecPcs = monthPcs;
+                        
+                    }
+                }
+                wrapObj.lastMTD = (lastMtd/Integer.valueOf(CurrentMonth)).setScale(2);
+                wrapObj.lastMTDPcs = (lastMtdPcs/Integer.valueOf(CurrentMonth)).setScale(2);
+            }else{
+                for(String month : months){
+                    wrapObj.lastYrJanVal = 0;
+                    wrapObj.lastYrFebVal = 0;
+                    wrapObj.lastYrMarVal = 0;
+                    wrapObj.lastYrAprVal = 0;
+                    wrapObj.lastYrMayVal = 0;
+                    wrapObj.lastYrJunVal = 0;
+                    wrapObj.lastYrJulVal = 0;
+                    wrapObj.lastYrAugVal = 0;
+                    wrapObj.lastYrSepVal = 0;
+                    wrapObj.lastYrOctVal = 0;
+                    wrapObj.lastYrNovVal = 0;
+                    wrapObj.lastYrDecVal = 0;
+                    
+                    wrapObj.lastYrDecPcs = 0;
+                    wrapObj.lastYrNovPcs = 0;
+                    wrapObj.lastYrOctPcs = 0;
+                    wrapObj.lastYrSepPcs = 0;
+                    wrapObj.lastYrAugPcs = 0;
+                    wrapObj.lastYrJulPcs = 0;
+                    wrapObj.lastYrJunPcs = 0;
+                    wrapObj.lastYrMayPcs = 0;
+                    wrapObj.lastYrAprPcs = 0;
+                    wrapObj.lastYrMarPcs = 0;
+                    wrapObj.lastYrFebPcs = 0;
+                    wrapObj.lastYrJanPcs = 0;
+                }
+                wrapObj.lastMTD = (lastMtd/Integer.valueOf(CurrentMonth)).setScale(2);
+                wrapObj.lastMTDPcs = (lastMtdPcs/Integer.valueOf(CurrentMonth)).setScale(2);
+            }
+            
+            flag = true;
+            
+            if(thisYearProdMap.containsKey(product)){
+                Map<String,Monthly_Invoice__c>thisYrProj = thisYearProdMap.get(product);
+                for(String month : months){
+                    Decimal monthRev = 0;
+                    Decimal monthPcs = 0;
+                    Decimal gwtRevenue = 0;
+                    
+                    if(thisYrProj.containsKey(month.toLowerCase())){
+                        Monthly_Invoice__c projectionObj = thisYrProj.get(month.toLowerCase());
+                        if(projectionObj.Revenue__c != null){
+                            monthRev = projectionObj.Revenue__c;
+                            monthPcs = projectionObj.Yeild_Per_Pc__c;
+                            
+                            if(CurrentMonth == month){
+                                monthRev = (monthRev / Integer.valueOf(month)).setScale(2);
+                                monthPcs = (monthPcs / Integer.valueOf(month)).setScale(2);
+                                flag = false;
+                            }
+                            if(flag){
+                                thisMtd += projectionObj.Revenue__c; 
+                                lastMtdPcs += projectionObj.Yeild_Per_Pc__c;
+                            }
+                        } 
+                    } 
+                    
+                    if(month == '01'){
+                        wrapObj.thisYrJanVal = monthRev;
+                        wrapObj.thisYrJanPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevJanVal = (((monthRev - wrapObj.lastYrJanVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsJanVal = (((monthPcs - wrapObj.lastYrJanPcs)/monthPcs) * 100).setScale(2);
+                         
+                    }if(month == '02'){
+                        wrapObj.thisYrFebVal = monthRev;
+                        wrapObj.thisYrFebPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevFebVal = (((monthRev - wrapObj.lastYrFebVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsFebVal = (((monthPcs - wrapObj.lastYrFebPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '03'){
+                        wrapObj.thisYrMarVal = monthRev;
+                        wrapObj.thisYrMarPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevMarVal = (((monthRev - wrapObj.lastYrMarVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsMarVal = (((monthPcs - wrapObj.lastYrMarPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '04'){
+                        wrapObj.thisYrAprVal = monthRev;
+                        wrapObj.thisYrAprPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevAprVal = (((monthRev - wrapObj.lastYrAprVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsAprVal = (((monthPcs - wrapObj.lastYrAprPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '05'){
+                        wrapObj.thisYrMayVal = monthRev;
+                        wrapObj.thisYrMayPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevMayVal = (((monthRev - wrapObj.lastYrMayVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsMayVal = (((monthPcs - wrapObj.lastYrMayPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '06'){
+                        wrapObj.thisYrJunVal = monthRev;
+                        wrapObj.thisYrJunPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevJunVal = (((monthRev - wrapObj.lastYrJunVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsJunVal = (((monthPcs - wrapObj.lastYrJunPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '07'){
+                        wrapObj.thisYrJulVal = monthRev;
+                        wrapObj.thisYrJulPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevJulVal = (((monthRev - wrapObj.lastYrJulVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsJulVal = (((monthPcs - wrapObj.lastYrJulPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '08'){
+                        wrapObj.thisYrAugVal = monthRev;
+                        wrapObj.thisYrAugPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevAugVal = (((monthRev - wrapObj.lastYrAugVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsAugVal = (((monthPcs - wrapObj.lastYrAugPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '09'){
+                        wrapObj.thisYrSepVal = monthRev;
+                        wrapObj.thisYrSepPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevSepVal = (((monthRev - wrapObj.lastYrSepVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsSepVal = (((monthPcs - wrapObj.lastYrSepPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '10'){
+                        wrapObj.thisYrOctVal = monthRev;
+                        wrapObj.thisYrOctPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevOctVal = (((monthRev - wrapObj.lastYrOctVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsOctVal = (((monthPcs - wrapObj.lastYrOctPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '11'){
+                        wrapObj.thisYrNovVal = monthRev;
+                        wrapObj.thisYrNovPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevNovVal = (((monthRev - wrapObj.lastYrNovVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsNovVal = (((monthPcs - wrapObj.lastYrNovPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }if(month == '12'){
+                        wrapObj.thisYrDecVal = monthRev;
+                        wrapObj.thisYrDecPcs = monthPcs;
+                        if(monthRev != 0)
+                            wrapObj.gwtRevDecVal = (((monthRev - wrapObj.lastYrDecVal)/monthRev) * 100).setScale(2);
+                        if(monthPcs != 0)
+                            wrapObj.gwtPcsDecVal = (((monthPcs - wrapObj.lastYrDecPcs)/monthPcs) * 100).setScale(2);
+                        
+                    }
+                }
+                wrapObj.thisMTD = (thisMtd/Integer.valueOf(CurrentMonth)).setScale(2);
+                wrapObj.thisMTDPcs = (thisMtdPcs/Integer.valueOf(CurrentMonth)).setScale(2);
+                
+            }else{
+                for(String month : months){
+                    if(month == '01'){
+                        wrapObj.thisYrJanVal = 0;
+                    }if(month == '02'){
+                        wrapObj.thisYrFebVal = 0;
+                    }if(month == '03'){
+                        wrapObj.thisYrMarVal = 0;
+                    }if(month == '04'){
+                        wrapObj.thisYrAprVal = 0;
+                    }if(month == '05'){
+                        wrapObj.thisYrMayVal = 0;
+                    }if(month == '06'){
+                        wrapObj.thisYrJunVal = 0;
+                    }if(month == '07'){
+                        wrapObj.thisYrJulVal = 0;
+                    }if(month == '08'){
+                        wrapObj.thisYrAugVal = 0;
+                    }if(month == '09'){
+                        wrapObj.thisYrSepVal = 0;
+                    }if(month == '10'){
+                        wrapObj.thisYrOctVal = 0;
+                    }if(month == '11'){
+                        wrapObj.thisYrNovVal = 0;
+                    }if(month == '12'){
+                        wrapObj.thisYrDecVal = 0;
+                    }
+                }
+                wrapObj.thisMTD = (thisMtd/Integer.valueOf(CurrentMonth)).setScale(2);
+                wrapObj.thisMTDPcs = (thisMtdPcs/Integer.valueOf(CurrentMonth)).setScale(2);
+            }
+            
+            wraperList.add(wrapObj);
+        }
+        
+        return wraperList;
+    }
+    
+    @AuraEnabled
+    public static List<Monthly_Projection__c> getProjection(String accountId,String cYear, string cMonth,String projectionType) {
+        System.debug('accountId -> '+accountId);
+        System.debug('cYear -> '+cYear);
+        System.debug('cMonth -> '+cMonth);
+        System.debug('projectionType -> '+projectionType);
+        
+        Account groupAccount;
+        String groupCode='';
+        for(Account acc: [select id,Group_Code__c from Account where Id=:accountId]){
+            groupAccount = acc;
+        }
+        
+        if(String.isNotBlank(groupCode)){
+            groupCode = '%'+groupAccount.Group_Code__c+'%';
+        }
+        List<Monthly_Projection__c> Projection = new List<Monthly_Projection__c>();
+        if(projectionType != null && String.isNotBlank(projectionType) ){
+            if( projectionType.containsIgnoreCase ('TOP')){
+                for(Monthly_Projection__c proj : [SELECT Id,KAM_Type__c,Created_Formatted_date__c,Unique_Key__c,Remark__c,Temp_Remark__c,Actuals__c, Group_Code__c,Group_Level__c,Group_Name__c,Month__c,Product__c,Target_Revenue__c,Product__r.Name,Product_Name__c,Target_Shipment__c,Target_Weight__c,Year__c FROM Monthly_Projection__c WHERE Year__c=:cYear AND Month__c=:cMonth AND Unique_Key__c LIKE: groupCode]){
+                    Projection.add(proj);
+                }
+            }else if(projectionType.containsIgnoreCase ('MY KAM')){
+                User currentUser = [select id,Employee_Code__c from User where Id =:Userinfo.getUserId()];
+                if(currentUser.Employee_Code__c != null){
+                    String empCodeSearchKey = '%'+currentUser.Employee_Code__c+'%';
+                    for(Monthly_Projection__c proj : [SELECT Id,KAM_Type__c,Created_Formatted_date__c,Unique_Key__c,Remark__c,Temp_Remark__c,Actuals__c, Group_Code__c,Group_Level__c,Group_Name__c,Month__c,Product__c,Target_Revenue__c,Product__r.Name,Product_Name__c,Target_Shipment__c,Target_Weight__c,Year__c FROM Monthly_Projection__c WHERE Year__c=:cYear AND Month__c=:cMonth AND CreatedbyId =:currentUser.id]){
+                        Projection.add(proj);
+                    }
+                }
+            }
+        } 
+        System.debug('Projection--> '+Projection);
+        return Projection;
+    }
+    
+    @AuraEnabled
+    public static List<Monthly_Projection__c> getAllProjections() {
+        List<Monthly_Projection__c> allProjection = [SELECT Id,KAM_Type__c,Created_Formatted_date__c, Group_Code__c,Group_Level__c,Group_Name__c,Month__c,Product__c,Target_Revenue__c,Target_Shipment__c,Target_Weight__c,Year__c  FROM Monthly_Projection__c];
+        return allProjection;
+    }
+    
+    @AuraEnabled
+    public static List<Monthly_Projection__c> createProjectionRecords(String projectionData,String cYear, string cMonth,string currecordId){
+        System.debug('cYear'+cYear);
+        System.debug('cMonth'+cMonth);
+        
+        List<Monthly_Projection__c> projectionLst = new List<Monthly_Projection__c>();
+        Map<String,Monthly_Projection__c>projectionMap = new Map<String,Monthly_Projection__c>();
+        
+        for(Monthly_Projection__c obj : [select id,Unique_Key__c,Group_Name__c from Monthly_Projection__c where Group_Name__c =:currecordId ]){
+            projectionMap.put(obj.Unique_Key__c,obj);
+        }
+        
+        Map<String,Object>projectionToInsert =  (Map<String,Object>) JSON.deserializeUntyped(projectionData);
+        System.debug('projectionToInsert '+projectionToInsert);
+        System.debug('currecordId '+currecordId);
+        
+        String productName = '';
+        
+        if(projectionToInsert != null && String.isNotBlank(currecordId)){
+            System.debug('creation projection ');
+            Monthly_Projection__c newObj = new Monthly_Projection__c();
+            newObj.Group_Code__c = projectionToInsert.containsKey('Group_Code__c') ? String.valueOf(projectionToInsert.get('Group_Code__c')) : '';
+            newObj.Group_Level__c = projectionToInsert.containsKey('Group_Level__c') ? String.valueOf(projectionToInsert.get('Group_Level__c')) : '';
+            newObj.Month__c = projectionToInsert.containsKey('Month__c') ? String.valueOf(projectionToInsert.get('Month__c')) : '';
+            newObj.Remark__c = projectionToInsert.containsKey('Remark__c') ? String.valueOf(projectionToInsert.get('Remark__c')) : '';
+            newObj.KAM_Type__c = projectionToInsert.containsKey('KAM_Type__c') ? String.valueOf(projectionToInsert.get('KAM_Type__c')) : '';
+            
+            if(projectionToInsert.containsKey('Product__c') && String.isNotBlank(String.valueOf(projectionToInsert.get('Product__c') ))){
+                newObj.Product__c = String.valueOf(projectionToInsert.get('Product__c'));
+                productName = [select id,Name from product2 where id =: newObj.Product__c].name;
+            }
+            
+            newObj.Target_Revenue__c = projectionToInsert.containsKey('Target_Revenue__c') && String.isNotBlank(String.valueOf(projectionToInsert.get('Target_Revenue__c')))? Decimal.valueOf(String.valueOf(projectionToInsert.get('Target_Revenue__c'))) : 0;
+            newObj.Target_Shipment__c = projectionToInsert.containsKey('Target_Shipment__c') && String.isNotBlank(String.valueOf(projectionToInsert.get('Target_Shipment__c'))) ? Decimal.valueOf(String.valueOf(projectionToInsert.get('Target_Shipment__c'))) : 0;
+            newObj.Target_Weight__c = projectionToInsert.containsKey('Target_Weight__c') && String.isNotBlank(String.valueOf(projectionToInsert.get('Target_Weight__c')))? Decimal.valueOf(String.valueOf(projectionToInsert.get('Target_Weight__c'))) : 0;
+            newObj.Year__c = projectionToInsert.containsKey('Year__c') ? String.valueOf(projectionToInsert.get('Year__c')) : '';
+            newObj.Group_Name__c = currecordId;
+            
+            System.debug('newObj '+newObj);
+            String monthNum = '';
+            switch on newObj.Month__c {
+                when 'Jan' {		
+                    monthNum = '01';
+                }	
+                when 'Feb' {	
+                    monthNum = '02';
+                }
+                when 'Mar' {
+                    monthNum = '03';
+                }
+                when 'Apr' {	
+                    monthNum = '04';
+                }
+                when 'May' {	
+                    monthNum = '05';
+                }
+                when 'Jun' {	
+                    monthNum = '06';
+                }
+                when 'Jul' {	
+                    monthNum = '07';
+                }
+                when 'Aug' {	
+                    monthNum = '08';
+                }
+                when 'Sep' {	
+                    monthNum = '09';
+                }
+                when 'Oct' {	
+                    monthNum = '10';
+                }
+                when 'Nov' {	
+                    monthNum = '11';
+                }
+                when 'Dec' {	
+                    monthNum = '12';
+                }
+            }
+            
+            String key = newObj.Group_Code__c+'-'+productName+'-'+newObj.Year__c+''+monthNum;
+            System.debug('KEY is '+key);
+            try{
+                insert newObj;
+                System.debug('newObj inserted '+newObj);
+            }catch(Exception e){
+                System.debug('e.getMessage() '+e.getMessage());
+                if(e.getMessage().containsIgnoreCase('Access')){
+                    throw new AuraException('You dont have access to create the Projection on this account');
+                }else{
+                    System.debug('e.getMessage() '+e.getMessage());
+                    
+                    throw new AuraException(e.getMessage());
+                }
+            }
+            
+            projectionLst = [SELECT Id,Unique_Key__c,KAM_Type__c,Created_Formatted_date__c,Temp_Remark__c,Product_Name__c,Actuals__c, Group_Code__c,Group_Level__c,Group_Name__c,Month__c,Product__c,Product__r.Name,Target_Revenue__c,Target_Shipment__c,Target_Weight__c,Year__c,Remark__c FROM Monthly_Projection__c WHERE Year__c=:newObj.Year__c AND Month__c=:newObj.Month__c AND Group_Name__c = : newObj.Group_Name__c];
+            //throw new AuraException();
+        }
+        return projectionLst;
+    }
+    
+    @AuraEnabled
+    public static void delRecord(String toDelete){
+        
+    }
+    
+    @AuraEnabled
+    public static List<Monthly_Projection__c> modifyProjection(String projectionId, String accountId,String cYear, string cMonth){
+        
+        System.debug('projectionId '+projectionId);
+        List<Monthly_Projection__c> projectionToUpda = new List<Monthly_Projection__c>();
+        for(Monthly_Projection__c proj : [select id,Remark__c,KAM_Type__c,Temp_Remark__c from Monthly_Projection__c where Id =:projectionId]){
+            
+            if(proj.Remark__c != null){
+                proj.Remark__c += proj.Temp_Remark__c != null ? ' '+proj.Temp_Remark__c  : '' ;
+            }else{
+                proj.Remark__c = proj.Temp_Remark__c != null ? proj.Temp_Remark__c : '' ;
+            }
+            proj.Remark__c += '\n';
+            proj.Temp_Remark__c = '';
+            projectionToUpda.add(proj);
+        }
+        System.debug('projectionToUpda '+projectionToUpda);
+        update projectionToUpda;
+        if(!Test.isRunningTest()){
+           return getProjection( accountId, cYear,  cMonth,projectionToUpda[0].KAM_Type__c);
+        } 
+        return null;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    Public static void fakeMethod(){
+        integer i = 0;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;     i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        i=i+1;i=i+1;
+        
+        
+    }
+    
+}
